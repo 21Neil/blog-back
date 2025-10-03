@@ -32,7 +32,8 @@ input {
 }
 
 input:focus {
-  border-color: var(--main-color);
+  outline: none;
+  border-color: #67CFFF
 }
 
 .btn-container {
