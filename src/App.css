@@ -1,0 +1,49 @@
+@font-face {
+  font-family: caveat;
+  font-weight: 400;
+  src: url(./assets/Caveat-Regular.ttf);
+}
+
+@font-face {
+  font-family: LXGW;
+  font-weight: 400;
+  src: url(./assets/LXGWWenKaiTC-Regular.ttf);
+}
+
+:root {
+  --font-color: #303030;
+  --font-color-light: #7d7d7d;
+  --main-color: #5d7580;
+  --second-color: #d9d9d9;
+  --font-color-white: #ffffff;
+  font-size: 14px;
+}
+
+body {
+  font-family: LXGW;
+  font-weight: 400;
+  color: var(--font-color);
+}
+
+input {
+  border: 1px solid #797979;
+  border-radius: 5px;
+  padding: 0.25rem 0.25rem;
+}
+
+input:focus {
+  border-color: var(--main-color);
+}
+
+.btn-container {
+  display: flex;
+  justify-content: end;
+}
+
+.btn {
+  background-color: var(--main-color);
+  color: var(--font-color-white);
+  border: none;
+  border-radius: 5px;
+  padding: 0.42rem 0.57rem;
+}

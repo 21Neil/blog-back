@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import useFetch from '../../hooks/useFetch';
 import { AuthContext } from '../../context/AuthContext';
+import style from './Login.module.css';
 
 export const Login = () => {
   const [formdata, setFormdata] = useState(null);
@@ -14,24 +15,42 @@ export const Login = () => {
   };
 
   return (
-    <>
-      <form>
-        <input
-          type='text'
-          name='username'
-          onChange={e =>
-            setFormdata(prev => ({ ...prev, username: e.target.value }))
-          }
-        />
-        <input
-          type='text'
-          name='password'
-          onChange={e =>
-            setFormdata(prev => ({ ...prev, password: e.target.value }))
-          }
-        />
-        <button onClick={submitOnClick}>submit</button>
+    <main className={style.login}>
+      <h1 className={style.login__title}>Neil.</h1>
+      <form className={style.login__form}>
+        <div className={style.login__inputGroup}>
+          <div className={style.login__field}>
+            <label htmlFor='username'>
+              Username
+            </label>
+            <input
+              type='text'
+              name='username'
+              id='username'
+              autoComplete='username'
+              onChange={e =>
+                setFormdata(prev => ({ ...prev, username: e.target.value }))
+              }
+            />
+          </div>
+          <div className={style.login__field}>
+            <label htmlFor='password'>
+              Password
+            </label>
+            <input
+              type='password'
+              name='password'
+              id='password'
+              onChange={e =>
+                setFormdata(prev => ({ ...prev, password: e.target.value }))
+              }
+            />
+          </div>
+        </div>
+        <div className='btn-container'>
+          <button className='btn' onClick={submitOnClick}>submit</button>
+        </div>
       </form>
-    </>
+    </main>
   );
 };
