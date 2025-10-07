@@ -48,3 +48,7 @@ input:focus {
   border-radius: 5px;
   padding: 0.42rem 0.57rem;
 }
+
+.btn:hover {
+  cursor: pointer
+}
