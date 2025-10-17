@@ -26,15 +26,14 @@ body {
 }
 
 input {
-  outline: none;
+  border: 1px solid #797979;
+  border-radius: 5px;
+  padding: 0.25rem 0.25rem;
 }
 
 input:focus {
+  outline: none;
   border-color: #67CFFF
-}
-
-input:invalid {
-  border-color: #ef4444;
 }
 
 .btn-container {
