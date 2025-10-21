@@ -17,6 +17,7 @@
   --second-color: #d9d9d9;
   --font-color-white: #ffffff;
   font-size: 14px;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
@@ -46,7 +47,7 @@ input:focus {
   color: var(--font-color-white);
   border: none;
   border-radius: 5px;
-  padding: 0.42rem 0.57rem;
+  padding: 0.40rem 0.57rem;
 }
 
 .btn:hover {

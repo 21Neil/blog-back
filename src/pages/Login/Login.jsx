@@ -48,7 +48,7 @@ export const Login = () => {
           </div>
         </div>
         <div className='btn-container'>
-          <button className='btn' onClick={submitOnClick}>submit</button>
+          <button className='btn' onClick={submitOnClick}>Login</button>
         </div>
       </form>
     </main>
