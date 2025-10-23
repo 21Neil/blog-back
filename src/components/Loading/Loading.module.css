@@ -1,0 +1,36 @@
+.backdrop {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.backdropShow {
+  opacity: 1;
+  transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1);
+  visibility: visible;
+}
+
+.spinner {
+  display: flex;
+  animation: 1s infinite normal spinning linear;
+}
+
+@keyframes spinning {
+  from {
+    transform: rotate(-50deg)
+  }
+
+  to {
+    transform: rotate(310deg)
+  }
+}

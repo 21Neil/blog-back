@@ -2,20 +2,21 @@ import { useContext, useEffect, useState } from 'react';
 import './App.css';
 import { Outlet, useNavigate } from 'react-router';
 import { AuthContext } from './context/AuthContext';
-import { Loading } from './pages/Loading/Loading';
+import Loading from './components/Loading/Loading';
 
 function App() {
   const navigate = useNavigate();
-  const { isLogin, loading} = useContext(AuthContext);
+  const { isLogin, loading } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!isLogin) navigate('/login')
+    if (!isLogin) navigate('/login');
     if (isLogin) navigate('/dashboard');
-  }, [isLogin])
+  }, [isLogin]);
 
   return (
     <>
-      {loading ? <Loading /> : <Outlet />}
+      <Outlet />
+      {loading ? <Loading loading={loading} /> : null}
     </>
   );
 }

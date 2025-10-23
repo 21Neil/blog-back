@@ -11,6 +11,7 @@ const useFetch = (url = null) => {
 
   const req = useCallback(async (method, url, body = null) => {
     setLoading(true);
+    await new Promise(res => setTimeout(res, 500))
     setErr(null);
     try {
       const res = await fetch(baseUrl + url, {
