@@ -4,7 +4,7 @@ export const Error = () => {
   return (
     <main className={style.error}>
       <h1 className={style.error__title}>404 Not found</h1>
-      <div className='btn-container'>
+      <div className='btn-container jc-center'>
         <a href='/dashboard'>
           <button className='btn'>Back dashboard</button>
         </a>

@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { LoadingContext } from '../context/LoadingContext';
 
 const baseUrl = import.meta.env.PROD
   ? 'prod url'
@@ -8,10 +9,12 @@ const useFetch = (url = null) => {
   const [data, setData] = useState(null);
   const [err, setErr] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { startLoading, stopLoading } = useContext(LoadingContext);
 
   const req = useCallback(async (method, url, body = null) => {
     setLoading(true);
-    await new Promise(res => setTimeout(res, 500))
+    startLoading();
+    // await new Promise(res => setTimeout(res, 2000))
     setErr(null);
     try {
       const res = await fetch(baseUrl + url, {
@@ -32,6 +35,7 @@ const useFetch = (url = null) => {
       throw err;
     } finally {
       setLoading(false);
+      stopLoading();
     }
   }, []);
 

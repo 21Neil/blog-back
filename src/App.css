@@ -14,7 +14,9 @@
   --font-color: #303030;
   --font-color-light: #7d7d7d;
   --main-color: #5d7580;
+  --main-color-hover: #445f6d;
   --second-color: #d9d9d9;
+  --second-color-hover: #c2c2c2;
   --font-color-white: #ffffff;
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
@@ -37,12 +39,27 @@ input:focus {
   border-color: #67CFFF
 }
 
+h1 {
+  font-size:  2.57rem;
+  font-weight: 400;
+  margin: 1rem 0;
+}
+
+a {
+  text-decoration: none;
+}
+
 .btn-container {
   display: flex;
   justify-content: end;
+  width: 100%;
 }
 
 .btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
   background-color: var(--main-color);
   color: var(--font-color-white);
   border: none;
@@ -51,5 +68,19 @@ input:focus {
 }
 
 .btn:hover {
-  cursor: pointer
+  cursor: pointer;
+  background-color: var(--main-color-hover);
+}
+
+.second {
+  background-color: var(--second-color);
+  color: var(--font-color);
+}
+
+.second:hover {
+  background-color: var(--second-color-hover);
+}
+
+.jc-center {
+  justify-content: center;
 }

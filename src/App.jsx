@@ -3,10 +3,12 @@ import './App.css';
 import { Outlet, useNavigate } from 'react-router';
 import { AuthContext } from './context/AuthContext';
 import Loading from './components/Loading/Loading';
+import { LoadingContext } from './context/LoadingContext';
 
 function App() {
   const navigate = useNavigate();
-  const { isLogin, loading } = useContext(AuthContext);
+  const { isLogin } = useContext(AuthContext);
+  const { isLoading } = useContext(LoadingContext);
 
   useEffect(() => {
     if (!isLogin) navigate('/login');
@@ -16,7 +18,7 @@ function App() {
   return (
     <>
       <Outlet />
-      {loading ? <Loading loading={loading} /> : null}
+      {isLoading ? <Loading loading={isLoading} /> : null}
     </>
   );
 }
