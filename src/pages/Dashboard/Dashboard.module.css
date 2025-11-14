@@ -1,6 +1,3 @@
 .dashboard {
-  display: flex;
   padding: 1.715rem 1.715rem;
-  gap: 0.715rem;
-  flex-direction: column;
 }

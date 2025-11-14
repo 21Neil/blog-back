@@ -1,0 +1,14 @@
+.root {
+  border-color: var(--light-grey-border);
+  height: 100%;
+  overflow: hidden;
+}
+
+.toolbar {
+  border-color: var(--light-grey-border);
+}
+
+.Typography {
+  height: calc(100% - 85px);
+  overflow: auto;
+}

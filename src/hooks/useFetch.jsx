@@ -1,11 +1,11 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { LoadingContext } from '../context/LoadingContext';
+import { useCallback, useContext, useState } from 'react';
+import LoadingContext from '../context/Loading/LoadingContext';
 
 const baseUrl = import.meta.env.PROD
   ? 'prod url'
   : 'http://localhost:3000/api/';
 
-const useFetch = (url = null) => {
+const useFetch = () => {
   const [data, setData] = useState(null);
   const [err, setErr] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -37,16 +37,12 @@ const useFetch = (url = null) => {
       setLoading(false);
       stopLoading();
     }
-  }, []);
+  }, [startLoading, stopLoading]);
 
   const get = useCallback(url => req('GET', url), [req]);
   const post = useCallback((url, body) => req('POST', url, body), [req]);
   const update = useCallback((url, body) => req('UPDATE', url, body), [req]);
   const del = useCallback(url => req('DELETE', url), [req]);
-
-  useEffect(() => {
-    if (url) get(url);
-  }, [url, get]);
 
   return { data, err, loading, get, post, update, del };
 };

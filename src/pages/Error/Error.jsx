@@ -1,14 +1,14 @@
+import { Link } from 'react-router';
 import style from './Error.module.css';
+import { Button, Group, Stack, Title } from '@mantine/core';
 
 export const Error = () => {
   return (
-    <main className={style.error}>
-      <h1 className={style.error__title}>404 Not found</h1>
-      <div className='btn-container jc-center'>
-        <a href='/dashboard'>
-          <button className='btn'>Back dashboard</button>
-        </a>
-      </div>
-    </main>
+    <Stack component='main' className={style.error}>
+      <Title>404 Not found</Title>
+      <Link to='/dashboard'>
+        <Button>Back dashboard</Button>
+      </Link>
+    </Stack>
   );
 };

@@ -1,19 +1,30 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import './App.css';
-import { Outlet, useNavigate } from 'react-router';
-import { AuthContext } from './context/AuthContext';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import Loading from './components/Loading/Loading';
-import { LoadingContext } from './context/LoadingContext';
+import { AuthContext } from './context/Auth/AuthContext';
+import LoadingContext from './context/Loading/LoadingContext';
 
 function App() {
   const navigate = useNavigate();
-  const { isLogin } = useContext(AuthContext);
+  const location = useLocation();
+  const { isLogin, isAuthReady } = useContext(AuthContext);
   const { isLoading } = useContext(LoadingContext);
 
   useEffect(() => {
-    if (!isLogin) navigate('/login');
-    if (isLogin) navigate('/dashboard');
-  }, [isLogin]);
+    if (!isAuthReady) return;
+
+    const currentPath = location.pathname;
+
+    if (!isLogin && currentPath !== '/login') {
+      navigate('/login');
+      return;
+    }
+    if (isLogin && currentPath === '/login') {
+      navigate('/dashboard');
+      return;
+    }
+  }, [isAuthReady, location.pathname, isLogin, navigate]);
 
   return (
     <>

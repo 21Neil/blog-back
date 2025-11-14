@@ -1,0 +1,16 @@
+.btnRoot {
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0 0.57rem;
+  &[data-variant='light'] {
+    background-color: var(--second-color);
+    color: var(--mantine-color-text);
+    &:hover {
+      background-color: var(--second-color-hover);
+    }
+  }
+}
+
+.inputError {
+  height: 1rem;
+}

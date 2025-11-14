@@ -1,57 +1,65 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import useFetch from '../../hooks/useFetch';
-import { AuthContext } from '../../context/AuthContext';
 import style from './Login.module.css';
 import Loading from '../../components/Loading/Loading';
+import { AuthContext } from '../../context/Auth/AuthContext';
+import { Button, Group, Stack, Text, Title } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { zod4Resolver } from 'mantine-form-zod-resolver';
+import z from 'zod';
+import LoginInput from './LoginInput';
+
+const schema = z.object({
+  username: z.string().min(1, { message: '請輸入使用者名稱' }).trim(),
+  password: z.string().min(1, { message: '請輸入密碼' }).trim(),
+});
 
 export const Login = () => {
-  const [formdata, setFormdata] = useState(null);
   const { loading, post } = useFetch();
   const { checkAuth } = useContext(AuthContext);
 
-  const submitOnClick = async e => {
-    e.preventDefault();
-    await post('auth/login', formdata);
-    await checkAuth();
+  const form = useForm({
+    mode: 'uncontrolled',
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validate: zod4Resolver(schema),
+  });
+
+  const handleSubmit = async values => {
+    try {
+      await post('auth/login', values);
+      await checkAuth();
+    } catch (err) {
+      form.setFieldError('loginFail', err.message)
+    }
   };
 
   return (
     <>
-      <main className={style.login}>
-        <h1 className={style.login__title}>Neil.</h1>
-        <form className={style.login__form}>
-          <div className={style.login__inputGroup}>
-            <div className={style.login__field}>
-              <label htmlFor='username'>Username</label>
-              <input
-                type='text'
-                name='username'
-                id='username'
-                autoComplete='username'
-                onChange={e =>
-                  setFormdata(prev => ({ ...prev, username: e.target.value }))
-                }
-              />
-            </div>
-            <div className={style.login__field}>
-              <label htmlFor='password'>Password</label>
-              <input
-                type='password'
-                name='password'
-                id='password'
-                onChange={e =>
-                  setFormdata(prev => ({ ...prev, password: e.target.value }))
-                }
-              />
-            </div>
-          </div>
-          <div className='btn-container'>
-            <button className='btn' onClick={submitOnClick}>
-              Login
-            </button>
-          </div>
+      <Stack component='main' align='center' justify='center' className={style.login}>
+        <Title className={style.loginTitle}>Neil.</Title>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stack w={240} gap={0}>
+            <LoginInput
+              key={form.key('username')}
+              {...form.getInputProps('username')}
+              label='Username'
+            />
+            <LoginInput
+              key={form.key('password')}
+              {...form.getInputProps('password')}
+              label='Password'
+              type='password'
+            />
+          <Text size='sm' inline c='red.6' h={14}>{form.errors.loginFail}</Text>
+          </Stack>
+          <Group justify='flex-end'>
+            <Button type='submit'>Login</Button>
+          </Group>
         </form>
-      </main>
+      </Stack>
       {loading ? <Loading loading={loading} /> : null}
     </>
   );

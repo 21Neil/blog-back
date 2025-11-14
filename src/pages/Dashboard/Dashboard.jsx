@@ -1,8 +1,10 @@
 import { useContext, useEffect } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import { AuthContext } from '../../context/Auth/AuthContext';
 import useFetch from '../../hooks/useFetch';
-import style from './Dashboard.module.css'
+import style from './Dashboard.module.css';
 import { LogOut, Plus } from 'lucide-react';
+import { Link } from 'react-router';
+import { Button, Group, Stack, Title } from '@mantine/core';
 
 export const Dashboard = () => {
   const { setIsLogin } = useContext(AuthContext);
@@ -15,28 +17,30 @@ export const Dashboard = () => {
 
   useEffect(() => {
     const getAllPosts = async () => {
-      const res = await get('admin/posts')
-      console.log(res)
-    }
+      const res = await get('admin/posts');
+      console.log(res);
+    };
 
-    getAllPosts()
-  }, [])
+    getAllPosts();
+  }, [get]);
 
   return (
-    <main className={style.dashboard}>
-      <div className='btn-container'>
-        <button className='btn second' onClick={logoutOnClick}>
+    <Stack component='main' className={style.dashboard}>
+      <Group justify='flex-end'>
+        <Button onClick={logoutOnClick}>
           <LogOut size={14} />
           <span>logout</span>
-        </button>
-      </div>
-      <h1>管理貼文</h1>
-      <div className="btn-container">
-        <button className="btn">
-          <Plus size={14} />
-          <span>新增貼文</span>
-        </button>
-      </div>
-    </main>
+        </Button>
+      </Group>
+      <Title>管理貼文</Title>
+      <Group justify='flex-end'>
+        <Link to='/add-post'>
+          <Button variant='light'>
+            <Plus size={14} />
+            <span>新增貼文</span>
+          </Button>
+        </Link>
+      </Group>
+    </Stack>
   );
 };
