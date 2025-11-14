@@ -7,6 +7,8 @@ import { Button, Group, Stack } from '@mantine/core';
 import ImageUploader from '../../components/ImageUploader/ImageUploader';
 import ContentEditor from '../../components/ContentEditor/ContentEditor';
 import PostTitle from '../../components/PostTitle/PostTitle';
+import useFetch from '../../hooks/useFetch';
+import createPostFormData from '../../utils/createPostFormdata';
 
 const schema = z.object({
   title: z.string().min(1, { message: '請輸入標題' }).trim(),
@@ -14,6 +16,7 @@ const schema = z.object({
 });
 
 const AddPost = () => {
+  const { post } = useFetch(true);
   const navigate = useNavigate();
 
   const form = useForm({
@@ -34,11 +37,20 @@ const AddPost = () => {
   };
 
   const handleSaveDraft = async () => {
-    console.log(form.getValues())
+    if (form.validate().hasErrors) return;
+
+    const values = form.getValues();
+    const formdata = createPostFormData(values, false)
+    
+    await post('admin/posts', formdata);
+    navigate('/dashboard')
   };
 
   const handleSubmit = async values => {
-    console.log(values);
+    const formdata = createPostFormData(values, true)
+    
+    await post('admin/posts', formdata);
+    navigate('/dashboard')
   };
 
   return (
