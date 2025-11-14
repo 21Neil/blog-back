@@ -24,8 +24,9 @@ const theme = createTheme({
   lineHeights: 1,
   defaultRadius: '6px',
   headings: {
+    fontWeight: 400,
     sizes: {
-      h1: { fontSize: '2.57rem', fontWeight: 400, margin: '0.5rem 0' },
+      h1: { fontSize: '2.57rem', margin: '0.5rem 0' },
     },
   },
   components: {

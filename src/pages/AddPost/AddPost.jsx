@@ -9,6 +9,15 @@ import ContentEditor from '../../components/ContentEditor/ContentEditor';
 import PostTitle from '../../components/PostTitle/PostTitle';
 import useFetch from '../../hooks/useFetch';
 import createPostFormData from '../../utils/createPostFormdata';
+import { useDisclosure } from '@mantine/hooks';
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
+import NoticeModal from '../../components/NoticeModal/NoticeModal';
+import { useMemo, useState } from 'react';
+
+const ActionType = {
+  cancel: 'cancel',
+  publish: 'publish',
+};
 
 const schema = z.object({
   title: z.string().min(1, { message: '請輸入標題' }).trim(),
@@ -16,8 +25,20 @@ const schema = z.object({
 });
 
 const AddPost = () => {
+  const [noticeTitle, setNoticeTitle] = useState('伺服器錯誤');
+  const [actionType, setActionType] = useState(ActionType.publish);
   const { post } = useFetch(true);
   const navigate = useNavigate();
+
+  const [
+    confirmModalOpened,
+    { open: confirmModalOpen, close: confirmModalClose },
+  ] = useDisclosure(false);
+
+  const [
+    noticeModalOpened,
+    { open: noticeModalOpen, close: noticeModalClose },
+  ] = useDisclosure(false);
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -32,25 +53,58 @@ const AddPost = () => {
     validate: zod4Resolver(schema),
   });
 
+  const confirmModalTitle = useMemo(() => {
+    if (actionType === ActionType.cancel) return '確認取消？';
+    if (actionType === ActionType.publish) return '確認發佈？';
+  }, [actionType]);
+
   const handleCancel = () => {
-    navigate(-1);
+    setActionType(ActionType.cancel);
+    confirmModalOpen();
   };
 
   const handleSaveDraft = async () => {
     if (form.validate().hasErrors) return;
 
     const values = form.getValues();
-    const formdata = createPostFormData(values, false)
-    
-    await post('admin/posts', formdata);
-    navigate('/dashboard')
+    const formdata = createPostFormData(values, false);
+
+    try {
+      await post('admin/posts', formdata);
+      navigate('/dashboard');
+    } catch {
+      setNoticeTitle('儲存失敗');
+      noticeModalOpen();
+    }
   };
 
-  const handleSubmit = async values => {
-    const formdata = createPostFormData(values, true)
-    
-    await post('admin/posts', formdata);
-    navigate('/dashboard')
+  const handleSubmit = () => {
+    setActionType(ActionType.publish);
+    confirmModalOpen();
+  };
+
+  const handleModalConfirm = async () => {
+    confirmModalClose();
+
+    if (actionType === ActionType.cancel) {
+      navigate(-1);
+      return;
+    }
+
+    if (actionType === ActionType.publish) {
+      const values = form.getValues();
+      const formdata = createPostFormData(values, true);
+
+      try {
+        await post('admin/posts', formdata);
+        navigate('/dashboard');
+      } catch {
+        setNoticeTitle('發布失敗');
+        noticeModalOpen();
+      }
+
+      return;
+    }
   };
 
   return (
@@ -77,6 +131,17 @@ const AddPost = () => {
           <Button type='submit'>發布</Button>
         </Group>
       </Stack>
+      <ConfirmModal
+        close={confirmModalClose}
+        opened={confirmModalOpened}
+        handleModalConfirm={handleModalConfirm}
+        title={confirmModalTitle}
+      />
+      <NoticeModal
+        close={noticeModalClose}
+        opened={noticeModalOpened}
+        title={noticeTitle}
+      />
     </main>
   );
 };
