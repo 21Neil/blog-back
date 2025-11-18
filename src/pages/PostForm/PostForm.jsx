@@ -1,4 +1,4 @@
-import styles from './AddPost.module.css';
+import styles from './PostForm.module.css';
 import z from 'zod';
 import { useNavigate } from 'react-router';
 import { useForm } from '@mantine/form';
@@ -24,7 +24,7 @@ const schema = z.object({
   image: z.file('請選擇封面圖片'),
 });
 
-const AddPost = () => {
+const PostForm = () => {
   const [noticeTitle, setNoticeTitle] = useState('伺服器錯誤');
   const [actionType, setActionType] = useState(ActionType.publish);
   const { post } = useFetch(true);
@@ -145,4 +145,4 @@ const AddPost = () => {
   );
 };
 
-export default AddPost;
+export default PostForm;

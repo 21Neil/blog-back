@@ -1,5 +1,5 @@
 import App from './App';
-import AddPost from './pages/AddPost/AddPost';
+import PostForm from './pages/PostForm/PostForm';
 import { Dashboard } from './pages/Dashboard/Dashboard';
 import { Error } from './pages/Error/Error';
 import { Login } from './pages/Login/Login';
@@ -20,8 +20,12 @@ export const routes = [
       },
       {
         path: '/add-post',
-        element: <AddPost />,
+        element: <PostForm />,
       },
+      {
+        path: '/edit-post',
+        element: <PostForm />,
+      }
     ],
   },
 ];
