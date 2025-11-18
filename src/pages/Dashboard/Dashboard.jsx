@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/Auth/AuthContext';
 import useFetch from '../../hooks/useFetch';
 import style from './Dashboard.module.css';
@@ -10,21 +10,28 @@ import PostListItem from './Widgets/PostListItem';
 export const Dashboard = () => {
   const [posts, setPosts] = useState([]);
   const { setIsLogin } = useContext(AuthContext);
-  const { get, post } = useFetch();
+  const { get, post, put } = useFetch();
+
+  const getAllPosts = useCallback(async () => {
+    const res = await get('/admin/posts');
+    setPosts(res);
+  }, [get]);
 
   const logoutOnClick = async () => {
-    await post('auth/logout');
+    await post('/auth/logout');
     setIsLogin(false);
   };
 
-  useEffect(() => {
-    const getAllPosts = async () => {
-      const res = await get('admin/posts');
-      setPosts(res);
-    };
-
+  const handlePublish = async (id, published) => {
+    await put('/admin/posts/' + id, {
+      published,
+    });
     getAllPosts();
-  }, [get]);
+  };
+
+  useEffect(() => {
+    getAllPosts();
+  }, [getAllPosts]);
 
   return (
     <Stack component='main' className={style.dashboard}>
@@ -47,7 +54,7 @@ export const Dashboard = () => {
       </Group>
 
       {posts.map(item => (
-        <PostListItem item={item} />
+        <PostListItem item={item} handlePublish={handlePublish} />
       ))}
     </Stack>
   );

@@ -29,7 +29,7 @@ export const Login = () => {
 
   const handleSubmit = async values => {
     try {
-      await post('auth/login', values);
+      await post('/auth/login', values);
       await checkAuth();
     } catch (err) {
       form.setFieldError('loginFail', err.message)

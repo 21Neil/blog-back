@@ -3,7 +3,7 @@ import LoadingContext from '../context/Loading/LoadingContext';
 
 const baseUrl = import.meta.env.PROD
   ? 'prod url'
-  : 'http://localhost:3000/api/';
+  : 'http://localhost:3000/api';
 
 const useFetch = (formdata = false) => {
   const [data, setData] = useState(null);

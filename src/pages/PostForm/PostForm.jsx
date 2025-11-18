@@ -69,7 +69,7 @@ const PostForm = () => {
     const formdata = createPostFormData(values, false);
 
     try {
-      await post('admin/posts', formdata);
+      await post('/admin/posts', formdata);
       navigate('/dashboard');
     } catch {
       setNoticeTitle('儲存失敗');
@@ -95,7 +95,7 @@ const PostForm = () => {
       const formdata = createPostFormData(values, true);
 
       try {
-        await post('admin/posts', formdata);
+        await post('/admin/posts', formdata);
         navigate('/dashboard');
       } catch {
         setNoticeTitle('發布失敗');

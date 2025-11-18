@@ -8,14 +8,14 @@ const AuthProvider = ({ children }) => {
   const { loading, get } = useFetch();
 
   const checkAuth = async () => {
-    const res = await get('auth/check-login');
+    const res = await get('/auth/check-login');
     if (res && res.isLogin) setIsLogin(res.isLogin);
   };
 
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const res = await get('auth/check-login');
+        const res = await get('/auth/check-login');
 
         if (res && res.isLogin) setIsLogin(res.isLogin);
       } catch (err) {

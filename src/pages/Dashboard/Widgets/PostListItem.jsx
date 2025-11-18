@@ -11,9 +11,7 @@ import {
 } from '@mantine/core';
 import { Ellipsis } from 'lucide-react';
 
-const PostListItem = ({ item }) => {
-  const handleMore = () => {};
-  console.log(item);
+const PostListItem = ({ item, handlePublish }) => {
   return (
     <Box>
       <Flex h={66} gap={16} pt={8} pb={8}>
@@ -28,13 +26,17 @@ const PostListItem = ({ item }) => {
         <Flex align='center' ml='auto'>
           <Menu position='bottom-end'>
             <Menu.Target>
-              <Button variant='transparent' onClick={handleMore}>
+              <Button variant='transparent'>
                 <Ellipsis />
               </Button>
             </Menu.Target>
 
             <Menu.Dropdown>
-              <Menu.Item>{item.published ? '取消發佈' : '發布貼文'}</Menu.Item>
+              <Menu.Item
+                onClick={() => handlePublish(item.id, !item.published)}
+              >
+                {item.published ? '取消發佈' : '發布貼文'}
+              </Menu.Item>
               <Menu.Divider />
               <Menu.Item>更新貼文</Menu.Item>
               <Menu.Divider />
