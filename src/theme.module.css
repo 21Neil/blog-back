@@ -9,6 +9,11 @@
       background-color: var(--second-color-hover);
     }
   }
+  &[data-variant='transparent'] {
+    color: var(--mantine-color-text);
+    padding: 0;
+    height: auto
+  }
 }
 
 .inputError {

@@ -1,12 +1,14 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/Auth/AuthContext';
 import useFetch from '../../hooks/useFetch';
 import style from './Dashboard.module.css';
 import { LogOut, Plus } from 'lucide-react';
 import { Link } from 'react-router';
 import { Button, Group, Stack, Title } from '@mantine/core';
+import PostListItem from './Widgets/PostListItem';
 
 export const Dashboard = () => {
+  const [posts, setPosts] = useState([]);
   const { setIsLogin } = useContext(AuthContext);
   const { get, post } = useFetch();
 
@@ -18,7 +20,7 @@ export const Dashboard = () => {
   useEffect(() => {
     const getAllPosts = async () => {
       const res = await get('admin/posts');
-      console.log(res);
+      setPosts(res);
     };
 
     getAllPosts();
@@ -27,20 +29,26 @@ export const Dashboard = () => {
   return (
     <Stack component='main' className={style.dashboard}>
       <Group justify='flex-end'>
-        <Button onClick={logoutOnClick}>
+        <Button variant='light' onClick={logoutOnClick}>
           <LogOut size={14} />
           <span>logout</span>
         </Button>
       </Group>
+
       <Title>管理貼文</Title>
+
       <Group justify='flex-end'>
         <Link to='/add-post'>
-          <Button variant='light'>
+          <Button>
             <Plus size={14} />
             <span>新增貼文</span>
           </Button>
         </Link>
       </Group>
+
+      {posts.map(item => (
+        <PostListItem item={item} />
+      ))}
     </Stack>
   );
 };

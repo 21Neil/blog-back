@@ -10,8 +10,10 @@ import styles from './ContentEditor.module.css';
 const ContentEditor = ({ form }) => {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
-    onUpdate: ({ editor }) =>
-      form.getInputProps('content').onChange(editor.getHTML()),
+    onUpdate: ({ editor }) => {
+      form.getInputProps('TEXTContent').onChange(editor.getText())
+      form.getInputProps('HTMLContent').onChange(editor.getHTML())
+    },
     extensions: [
       StarterKit.configure({ link: false }),
       Link,

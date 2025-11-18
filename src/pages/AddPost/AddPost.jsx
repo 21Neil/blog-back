@@ -45,10 +45,8 @@ const AddPost = () => {
     initialValues: {
       title: '',
       image: null,
-      content: '',
-    },
-    controlled: {
-      content: value => form.setFieldValue('content', value),
+      TEXTContent: '',
+      HTMLContent: '',
     },
     validate: zod4Resolver(schema),
   });
@@ -59,6 +57,7 @@ const AddPost = () => {
   }, [actionType]);
 
   const handleCancel = () => {
+    console.log(form.getValues())
     setActionType(ActionType.cancel);
     confirmModalOpen();
   };
