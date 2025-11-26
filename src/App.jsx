@@ -8,12 +8,15 @@ import LoadingContext from './context/Loading/LoadingContext';
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLogin, isAuthReady } = useContext(AuthContext);
+  const { isLogin, isAuthReady, checkAuth } = useContext(AuthContext);
   const { isLoading } = useContext(LoadingContext);
 
   useEffect(() => {
+    console.log('first')
+    checkAuth();
     if (!isAuthReady) return;
-
+    
+    console.log(isLogin)
     const currentPath = location.pathname;
 
     if (!isLogin && currentPath !== '/login') {
@@ -24,7 +27,7 @@ function App() {
       navigate('/dashboard');
       return;
     }
-  }, [isAuthReady, location.pathname, isLogin, navigate]);
+  }, [isAuthReady, location.pathname, isLogin, navigate, checkAuth]);
 
   return (
     <>

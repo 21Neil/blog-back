@@ -23,7 +23,7 @@ export const routes = [
         element: <PostForm />,
       },
       {
-        path: '/edit-post',
+        path: '/edit-post/:id',
         element: <PostForm />,
       }
     ],

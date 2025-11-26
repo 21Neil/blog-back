@@ -1,6 +1,6 @@
-import { Center, Modal, Stack, Title } from '@mantine/core';
+import { Center, Modal, Title } from '@mantine/core';
 
-function NoticeModal({ opened, close, title }) {
+const NoticeModal = ({ opened, close, title }) => {
   return (
     <Modal
       opened={opened}

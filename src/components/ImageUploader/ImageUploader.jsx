@@ -1,11 +1,11 @@
 import { Box, FileInput, Image, Text } from '@mantine/core';
-import styles from './ImageUploader.module.css'
+import styles from './ImageUploader.module.css';
 
 const ImageUploader = ({ form }) => (
   <Box mih={285}>
     <label className={styles.imageLabel}>
-      {form.getValues().image ? (
-        <Image src={URL.createObjectURL(form.getValues().image)} alt='' />
+      {form.getValues().imageUrl ? (
+        <Image src={form.getValues().imageUrl} />
       ) : (
         <p>Check to upload photo...</p>
       )}
@@ -15,9 +15,15 @@ const ImageUploader = ({ form }) => (
         key={form.key('image')}
         {...form.getInputProps('image')}
         error={form.errors.image}
+        onChange={e => {
+          form.setFieldValue('image', e);
+          form.setFieldValue('imageUrl', URL.createObjectURL(e));
+        }}
       />
     </label>
-    <Text size='sm' inline c='red.6' h={14}>{form.errors.image}</Text>
+    <Text size='sm' inline c='red.6' h={14}>
+      {form.errors.imageUrl}
+    </Text>
   </Box>
 );
 

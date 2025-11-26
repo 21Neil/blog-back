@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useFetch from '../../hooks/useFetch';
 import { AuthContext } from './AuthContext';
 
@@ -7,10 +7,14 @@ const AuthProvider = ({ children }) => {
   const [isAuthReady, setIsAuthReady] = useState(false);
   const { loading, get } = useFetch();
 
-  const checkAuth = async () => {
-    const res = await get('/auth/check-login');
-    if (res && res.isLogin) setIsLogin(res.isLogin);
-  };
+  const checkAuth = useCallback(async () => {
+    try {
+      const res = await get('/auth/check-login');
+      if (res && res.isLogin) return setIsLogin(res.isLogin);
+    } catch {
+      setIsLogin(false);
+    }
+  }, [get]);
 
   useEffect(() => {
     const checkLogin = async () => {

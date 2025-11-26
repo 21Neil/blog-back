@@ -1,6 +1,6 @@
 import { Button, Group, Modal, Stack, Title } from '@mantine/core';
 
-function ConfirmModal({ opened, close, title, handleModalConfirm }) {
+const ConfirmModal = ({ opened, close, title, handleModalConfirm }) => {
   return (
     <Modal
       opened={opened}

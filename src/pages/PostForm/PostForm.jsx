@@ -1,9 +1,9 @@
 import styles from './PostForm.module.css';
 import z from 'zod';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useForm } from '@mantine/form';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
-import { Button, Group, Stack } from '@mantine/core';
+import { Button, FileInput, Group, Stack } from '@mantine/core';
 import ImageUploader from '../../components/ImageUploader/ImageUploader';
 import ContentEditor from '../../components/ContentEditor/ContentEditor';
 import PostTitle from '../../components/PostTitle/PostTitle';
@@ -12,7 +12,7 @@ import createPostFormData from '../../utils/createPostFormdata';
 import { useDisclosure } from '@mantine/hooks';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 import NoticeModal from '../../components/NoticeModal/NoticeModal';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const ActionType = {
   cancel: 'cancel',
@@ -21,32 +21,36 @@ const ActionType = {
 
 const schema = z.object({
   title: z.string().min(1, { message: '請輸入標題' }).trim(),
-  image: z.file('請選擇封面圖片'),
+  imageUrl: z.string().min(1, { message: '請選擇封面圖片'}),
 });
 
 const PostForm = () => {
+  const { id } = useParams();
   const [noticeTitle, setNoticeTitle] = useState('伺服器錯誤');
   const [actionType, setActionType] = useState(ActionType.publish);
-  const { post } = useFetch(true);
+  const [isLoaded, setIsLoaded] = useState(!id);
+  const { post, put } = useFetch(true);
   const navigate = useNavigate();
 
   const [
     confirmModalOpened,
-    { open: confirmModalOpen, close: confirmModalClose },
+    { open: openConfirmModal, close: closeConfirmModal },
   ] = useDisclosure(false);
 
   const [
     noticeModalOpened,
-    { open: noticeModalOpen, close: noticeModalClose },
+    { open: openNoticeModal, close: closeNoticeModal },
   ] = useDisclosure(false);
 
-  const form = useForm({
+  const { setInitialValues, setValues, ...form } = useForm({
     mode: 'uncontrolled',
     initialValues: {
       title: '',
       image: null,
+      imageUrl: '',
       TEXTContent: '',
       HTMLContent: '',
+      JSONContent: {},
     },
     validate: zod4Resolver(schema),
   });
@@ -57,33 +61,50 @@ const PostForm = () => {
   }, [actionType]);
 
   const handleCancel = () => {
-    console.log(form.getValues())
+    console.log(form.getValues());
     setActionType(ActionType.cancel);
-    confirmModalOpen();
+    openConfirmModal();
   };
 
   const handleSaveDraft = async () => {
+    console.log(form.getValues())
     if (form.validate().hasErrors) return;
 
     const values = form.getValues();
     const formdata = createPostFormData(values, false);
 
-    try {
-      await post('/admin/posts', formdata);
-      navigate('/dashboard');
-    } catch {
-      setNoticeTitle('儲存失敗');
-      noticeModalOpen();
+    if (!id) {
+      try {
+        await post('/admin/posts', formdata);
+        navigate('/dashboard');
+      } catch {
+        setNoticeTitle('儲存失敗');
+        openNoticeModal();
+      }
+      return;
+    }
+
+    console.log(id)
+
+    if (id) {
+      try {
+        await put('/admin/posts/' + id, formdata);
+        navigate('/dashboard');
+      } catch {
+        setNoticeTitle('儲存失敗');
+        openNoticeModal();
+      }
+      return;
     }
   };
 
   const handleSubmit = () => {
     setActionType(ActionType.publish);
-    confirmModalOpen();
+    openConfirmModal();
   };
 
   const handleModalConfirm = async () => {
-    confirmModalClose();
+    closeConfirmModal();
 
     if (actionType === ActionType.cancel) {
       navigate(-1);
@@ -94,20 +115,60 @@ const PostForm = () => {
       const values = form.getValues();
       const formdata = createPostFormData(values, true);
 
-      try {
-        await post('/admin/posts', formdata);
-        navigate('/dashboard');
-      } catch {
-        setNoticeTitle('發布失敗');
-        noticeModalOpen();
+      if (!id) {
+        try {
+          await post('/admin/posts', formdata);
+          navigate('/dashboard');
+        } catch {
+          setNoticeTitle('發布失敗');
+          openNoticeModal();
+        }
+        return;
+      }
+
+      if (id) {
+        try {
+          await put('/admin/posts/' + id, formdata);
+          navigate('/dashboard');
+        } catch {
+          setNoticeTitle('發布失敗');
+          openNoticeModal();
+        }
+        return;
       }
 
       return;
     }
   };
 
+  useEffect(() => {
+    const getPostData = async id => {
+      try {
+        const data = await post('/admin/posts/' + id);
+        const formData = {
+          title: data.title,
+          imageUrl: data.imageUrl,
+          TEXTContent: data.TEXTContent,
+          HTMLContent: data.HTMLContent,
+          JSONContent: JSON.parse(data.JSONContent),
+        };
+        setInitialValues(formData);
+        setValues(formData);
+        setIsLoaded(true);
+      } catch {
+        setNoticeTitle('獲取文章資料失敗');
+        openNoticeModal();
+      }
+    };
+
+    if (id) {
+      getPostData(id);
+    }
+  }, [id, post, openNoticeModal, setInitialValues, setValues]);
+
   return (
     <main className={`main-container ` + styles.addPost}>
+      {console.log(form.getValues())}
       <Stack
         component='form'
         h='100%'
@@ -118,7 +179,9 @@ const PostForm = () => {
 
         <ImageUploader form={form} />
 
-        <ContentEditor form={form} />
+        {isLoaded && <ContentEditor form={form} />}
+
+        {/* <div dangerouslySetInnerHTML={{ __html: form.getValues().HTMLContent}}></div> */}
 
         <Group justify='flex-end' gap={10} mt={20}>
           <Button variant='light' onClick={handleCancel}>
@@ -131,13 +194,13 @@ const PostForm = () => {
         </Group>
       </Stack>
       <ConfirmModal
-        close={confirmModalClose}
+        close={closeConfirmModal}
         opened={confirmModalOpened}
         handleModalConfirm={handleModalConfirm}
         title={confirmModalTitle}
       />
       <NoticeModal
-        close={noticeModalClose}
+        close={closeNoticeModal}
         opened={noticeModalOpened}
         title={noticeTitle}
       />

@@ -11,9 +11,11 @@ const ContentEditor = ({ form }) => {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     onUpdate: ({ editor }) => {
-      form.getInputProps('TEXTContent').onChange(editor.getText())
-      form.getInputProps('HTMLContent').onChange(editor.getHTML())
+      form.getInputProps('TEXTContent').onChange(editor.getText());
+      form.getInputProps('HTMLContent').onChange(editor.getHTML());
+      form.getInputProps('JSONContent').onChange(editor.getJSON());
     },
+    content: form.getValues().JSONContent,
     extensions: [
       StarterKit.configure({ link: false }),
       Link,
@@ -50,9 +52,7 @@ const ContentEditor = ({ form }) => {
         onPaste: (currentEditor, files, htmlContent) => {
           files.forEach(file => {
             if (htmlContent) {
-              // if there is htmlContent, stop manual insertion & let other extensions handle insertion via inputRule
-              // you could extract the pasted file from this url string and upload it to a server for example
-              console.log(htmlContent);  
+              console.log(htmlContent);
               return false;
             }
 

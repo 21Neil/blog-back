@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { Ellipsis } from 'lucide-react';
 
-const PostListItem = ({ item, handlePublish }) => {
+const PostListItem = ({ item, handlePublish, handleEdit }) => {
   return (
     <Box>
       <Flex h={66} gap={16} pt={8} pb={8}>
@@ -38,7 +38,9 @@ const PostListItem = ({ item, handlePublish }) => {
                 {item.published ? '取消發佈' : '發布貼文'}
               </Menu.Item>
               <Menu.Divider />
-              <Menu.Item>更新貼文</Menu.Item>
+              <Menu.Item onClick={() => handleEdit(item.id)}>
+                更新貼文
+              </Menu.Item>
               <Menu.Divider />
               <Menu.Item>管理留言</Menu.Item>
               <Menu.Divider />
