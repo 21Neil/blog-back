@@ -33,7 +33,7 @@ const PostListItem = ({ item, handlePublish, handleEdit }) => {
 
             <Menu.Dropdown>
               <Menu.Item
-                onClick={() => handlePublish(item.id, !item.published)}
+                onClick={() => handlePublish(item.id, !item.published, item.JSONContent)}
               >
                 {item.published ? '取消發佈' : '發布貼文'}
               </Menu.Item>

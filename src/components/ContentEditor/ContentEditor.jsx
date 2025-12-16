@@ -6,8 +6,47 @@ import { Color, TextStyle } from '@tiptap/extension-text-style';
 import FileHandler from '@tiptap/extension-file-handler';
 import Image from '@tiptap/extension-image';
 import styles from './ContentEditor.module.css';
+import useFetch from '../../hooks/useFetch';
+import { useNavigate } from 'react-router';
 
-const ContentEditor = ({ form }) => {
+const ContentEditor = ({
+  form,
+  setNoticeTitle,
+  openNoticeModal,
+}) => {
+  const navigate = useNavigate();
+  const { post } = useFetch(true, navigate);
+
+  const handleImageUpload = async file => {
+    const formData = new FormData();
+
+    formData.append('uploadImage', file);
+
+    try {
+      const res = await post('/admin/posts/upload-content-image', formData);
+      return res;
+    } catch {
+      setNoticeTitle('圖片上傳失敗');
+      openNoticeModal();
+    }
+  };
+
+  const handleImage = async (currentEditor, file, pos) => {
+    const uploadRes = await handleImageUpload(file);
+    const imageUrl = uploadRes.url;
+
+    currentEditor
+      .chain()
+      .insertContentAt(pos, {
+        type: 'image',
+        attrs: {
+          src: imageUrl,
+        },
+      })
+      .focus()
+      .run();
+  };
+
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     onUpdate: ({ editor }) => {
@@ -22,7 +61,12 @@ const ContentEditor = ({ form }) => {
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Color,
       TextStyle,
-      Image,
+      Image.configure({
+        resize: {
+          enabled: true,
+          alwaysPreserveAspectRatio: true,
+        },
+      }),
       FileHandler.configure({
         allowedMimeTypes: [
           'image/png',
@@ -31,46 +75,22 @@ const ContentEditor = ({ form }) => {
           'image/webp',
         ],
         onDrop: (currentEditor, files, pos) => {
-          files.forEach(file => {
-            const fileReader = new FileReader();
-
-            fileReader.readAsDataURL(file);
-            fileReader.onload = () => {
-              currentEditor
-                .chain()
-                .insertContentAt(pos, {
-                  type: 'image',
-                  attrs: {
-                    src: fileReader.result,
-                  },
-                })
-                .focus()
-                .run();
-            };
+          files.forEach(async file => {
+            handleImage(currentEditor, file, pos);
           });
         },
         onPaste: (currentEditor, files, htmlContent) => {
-          files.forEach(file => {
+          files.forEach(async file => {
             if (htmlContent) {
               console.log(htmlContent);
               return false;
             }
 
-            const fileReader = new FileReader();
-
-            fileReader.readAsDataURL(file);
-            fileReader.onload = () => {
-              currentEditor
-                .chain()
-                .insertContentAt(currentEditor.state.selection.anchor, {
-                  type: 'image',
-                  attrs: {
-                    src: fileReader.result,
-                  },
-                })
-                .focus()
-                .run();
-            };
+            handleImage(
+              currentEditor,
+              file,
+              currentEditor.state.selection.anchor
+            );
           });
         },
       }),

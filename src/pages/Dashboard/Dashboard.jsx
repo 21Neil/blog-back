@@ -13,8 +13,8 @@ export const Dashboard = () => {
   const [noticeTitle, setNoticeTitle] = useState('伺服器錯誤');
   const [posts, setPosts] = useState([]);
   const { setIsLogin } = useContext(AuthContext);
-  const { get, post, put } = useFetch();
   const navigate = useNavigate();
+  const { get, post, put } = useFetch(undefined, navigate);
 
   const [
     noticeModalOpened,
@@ -41,14 +41,15 @@ export const Dashboard = () => {
     }
   };
 
-  const handlePublish = async (id, published) => {
+  const handlePublish = async (id, published, JSONContent) => {
     try {
       await put('/admin/posts/' + id, {
+        JSONContent,
         published,
       });
       await getAllPosts();
     } catch {
-      setNoticeTitle(published ? '' : '取消' + '發布失敗');
+      setNoticeTitle(published ? '發布失敗' : '取消' + '發布失敗');
       openNoticeModal();
     }
   };

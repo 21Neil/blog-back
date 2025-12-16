@@ -5,7 +5,7 @@ const baseUrl = import.meta.env.PROD
   ? 'prod url'
   : 'http://localhost:3000/api';
 
-const useFetch = (formdata = false) => {
+const useFetch = (formdata = false, navigate) => {
   const [data, setData] = useState(null);
   const [err, setErr] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -34,8 +34,11 @@ const useFetch = (formdata = false) => {
       try {
         const res = await fetch(baseUrl + url, config);
         const result = await res.json();
-        if (!res.ok)
-          throw new Error(result.message || `Server error: ${res.status}`);
+
+        if (res.status === 401 && navigate) navigate('/login')
+
+        if (!res.ok) throw new Error(result.message || `Server error: ${res.status}`)
+
         setData(result);
         return result;
       } catch (err) {
@@ -46,7 +49,7 @@ const useFetch = (formdata = false) => {
         stopLoading();
       }
     },
-    [startLoading, stopLoading, formdata]
+    [startLoading, stopLoading, formdata, navigate]
   );
 
   const get = useCallback(url => req('GET', url), [req]);

@@ -29,3 +29,37 @@ p {
 .main-container {
   padding: 3.43rem 1.715rem;
 }
+
+.tiptap {
+  img {
+    display: block;
+    margin: 0;
+  }
+
+  [data-resize-handle] {
+    /* Corner handles */
+    &[data-resize-handle='top-left'],
+    &[data-resize-handle='top-right'],
+    &[data-resize-handle='bottom-left'],
+    &[data-resize-handle='bottom-right'] {
+      width: 15px;
+      height: 15px;
+    }
+
+    &[data-resize-handle='top-left'] {
+      cursor: nwse-resize;
+    }
+
+    &[data-resize-handle='top-right'] {
+      cursor: nesw-resize;
+    }
+
+    &[data-resize-handle='bottom-left'] {
+      cursor: nesw-resize;
+    }
+
+    &[data-resize-handle='bottom-right'] {
+      cursor: nwse-resize;
+    }
+  }
+}

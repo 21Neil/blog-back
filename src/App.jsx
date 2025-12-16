@@ -12,11 +12,9 @@ function App() {
   const { isLoading } = useContext(LoadingContext);
 
   useEffect(() => {
-    console.log('first')
     checkAuth();
     if (!isAuthReady) return;
     
-    console.log(isLogin)
     const currentPath = location.pathname;
 
     if (!isLogin && currentPath !== '/login') {

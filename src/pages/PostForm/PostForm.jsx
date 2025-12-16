@@ -3,7 +3,7 @@ import z from 'zod';
 import { useNavigate, useParams } from 'react-router';
 import { useForm } from '@mantine/form';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
-import { Button, FileInput, Group, Stack } from '@mantine/core';
+import { Button, Group, Stack } from '@mantine/core';
 import ImageUploader from '../../components/ImageUploader/ImageUploader';
 import ContentEditor from '../../components/ContentEditor/ContentEditor';
 import PostTitle from '../../components/PostTitle/PostTitle';
@@ -21,7 +21,7 @@ const ActionType = {
 
 const schema = z.object({
   title: z.string().min(1, { message: '請輸入標題' }).trim(),
-  imageUrl: z.string().min(1, { message: '請選擇封面圖片'}),
+  imageUrl: z.string().min(1, { message: '請選擇封面圖片' }),
 });
 
 const PostForm = () => {
@@ -29,8 +29,8 @@ const PostForm = () => {
   const [noticeTitle, setNoticeTitle] = useState('伺服器錯誤');
   const [actionType, setActionType] = useState(ActionType.publish);
   const [isLoaded, setIsLoaded] = useState(!id);
-  const { post, put } = useFetch(true);
   const navigate = useNavigate();
+  const { post, put } = useFetch(true, navigate);
 
   const [
     confirmModalOpened,
@@ -50,7 +50,7 @@ const PostForm = () => {
       imageUrl: '',
       TEXTContent: '',
       HTMLContent: '',
-      JSONContent: {},
+      JSONContent: null,
     },
     validate: zod4Resolver(schema),
   });
@@ -67,11 +67,12 @@ const PostForm = () => {
   };
 
   const handleSaveDraft = async () => {
-    console.log(form.getValues())
+    console.log(form.getValues());
     if (form.validate().hasErrors) return;
 
     const values = form.getValues();
     const formdata = createPostFormData(values, false);
+    console.log(values, formdata);
 
     if (!id) {
       try {
@@ -83,8 +84,6 @@ const PostForm = () => {
       }
       return;
     }
-
-    console.log(id)
 
     if (id) {
       try {
@@ -179,7 +178,13 @@ const PostForm = () => {
 
         <ImageUploader form={form} />
 
-        {isLoaded && <ContentEditor form={form} />}
+        {isLoaded && (
+          <ContentEditor
+            form={form}
+            setNoticeTitle={setNoticeTitle}
+            openNoticeModal={openNoticeModal}
+          />
+        )}
 
         {/* <div dangerouslySetInnerHTML={{ __html: form.getValues().HTMLContent}}></div> */}
 
