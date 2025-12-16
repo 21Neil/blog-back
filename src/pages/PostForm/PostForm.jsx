@@ -61,7 +61,6 @@ const PostForm = () => {
   }, [actionType]);
 
   const handleCancel = () => {
-    console.log(form.getValues());
     setActionType(ActionType.cancel);
     openConfirmModal();
   };
@@ -167,7 +166,6 @@ const PostForm = () => {
 
   return (
     <main className={`main-container ` + styles.addPost}>
-      {console.log(form.getValues())}
       <Stack
         component='form'
         h='100%'

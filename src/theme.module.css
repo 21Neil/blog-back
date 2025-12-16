@@ -12,7 +12,10 @@
   &[data-variant='transparent'] {
     color: var(--mantine-color-text);
     padding: 0;
-    height: auto
+    height: auto;
+    &:hover {
+      background-color: rgba(0, 0, 0, 10%)
+    }
   }
 }
 

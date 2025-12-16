@@ -27,7 +27,8 @@ p {
 }
 
 .main-container {
-  padding: 3.43rem 1.715rem;
+  padding: 3.85rem 1.715rem;
+  height: 100vh;
 }
 
 .tiptap {

@@ -58,20 +58,23 @@ export const Dashboard = () => {
     navigate('/edit-post/' + id);
   };
 
+  const handleCommentsManagement = id => {
+    navigate('/comments-dashboard/' + id);
+  };
+
   useEffect(() => {
     getAllPosts();
   }, [getAllPosts]);
 
   return (
-    <>
-      <Stack component='main' className={style.dashboard}>
-        <Group justify='flex-end'>
-          <Button variant='light' onClick={logoutOnClick}>
-            <LogOut size={14} />
-            <span>logout</span>
-          </Button>
-        </Group>
-
+    <main className={style.dashboard}>
+      <Group justify='flex-end'>
+        <Button variant='light' onClick={logoutOnClick}>
+          <LogOut size={14} />
+          <span>logout</span>
+        </Button>
+      </Group>
+      <Stack>
         <Title>管理貼文</Title>
 
         <Group justify='flex-end'>
@@ -86,9 +89,7 @@ export const Dashboard = () => {
         {posts.map(item => (
           <PostListItem
             key={item.id}
-            item={item}
-            handlePublish={handlePublish}
-            handleEdit={handleEdit}
+            {...{ item, handlePublish, handleEdit, handleCommentsManagement }}
           />
         ))}
       </Stack>
@@ -97,6 +98,6 @@ export const Dashboard = () => {
         opened={noticeModalOpened}
         close={closeNoticeModal}
       />
-    </>
+    </main>
   );
 };
