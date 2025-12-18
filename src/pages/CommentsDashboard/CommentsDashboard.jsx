@@ -13,14 +13,16 @@ const CommentsDashboard = () => {
   const { get, del } = useFetch();
   const deleteCommentID = useRef();
   const navigate = useNavigate();
+
   const [
     confirmModalOpened,
     { open: openConfirmModal, close: closeConfirmModal },
-  ] = useDisclosure();
+  ] = useDisclosure(false);
+
   const [
     noticeModalOpened,
     { open: openNoticeModal, close: closeNoticeModal },
-  ] = useDisclosure();
+  ] = useDisclosure(false);
 
   const handleModalConfirm = async () => {
     closeConfirmModal();

@@ -13,6 +13,7 @@ const ContentEditor = ({
   form,
   setNoticeTitle,
   openNoticeModal,
+  postId
 }) => {
   const navigate = useNavigate();
   const { post } = useFetch(true, navigate);
@@ -21,6 +22,7 @@ const ContentEditor = ({
     const formData = new FormData();
 
     formData.append('uploadImage', file);
+    formData.append('postId', postId)
 
     try {
       const res = await post('/admin/posts/upload-content-image', formData);

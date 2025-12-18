@@ -16,6 +16,7 @@ const PostListItem = ({
   handlePublish,
   handleEdit,
   handleCommentsManagement,
+  handleDelete,
 }) => {
   return (
     <Box>
@@ -53,7 +54,9 @@ const PostListItem = ({
                 管理留言
               </Menu.Item>
               <Menu.Divider />
-              <Menu.Item color='red'>刪除貼文</Menu.Item>
+              <Menu.Item color='red' onClick={() => handleDelete(item.id)}>
+                刪除貼文
+              </Menu.Item>
             </Menu.Dropdown>
           </Menu>
         </Flex>

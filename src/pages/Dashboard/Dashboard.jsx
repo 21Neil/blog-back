@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { AuthContext } from '../../context/Auth/AuthContext';
 import useFetch from '../../hooks/useFetch';
 import style from './Dashboard.module.css';
@@ -8,17 +8,24 @@ import { Button, Group, Stack, Title } from '@mantine/core';
 import PostListItem from './Widgets/PostListItem';
 import { useDisclosure } from '@mantine/hooks';
 import NoticeModal from '../../components/NoticeModal/NoticeModal';
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 
 export const Dashboard = () => {
   const [noticeTitle, setNoticeTitle] = useState('伺服器錯誤');
   const [posts, setPosts] = useState([]);
   const { setIsLogin } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { get, post, put } = useFetch(undefined, navigate);
+  const { get, post, put, del } = useFetch(undefined, navigate);
+  const deletePostID = useRef();
 
   const [
     noticeModalOpened,
     { open: openNoticeModal, close: closeNoticeModal },
+  ] = useDisclosure(false);
+
+  const [
+    confirmModalOpened,
+    { open: openConfirmModal, close: closeConfirmModal },
   ] = useDisclosure(false);
 
   const getAllPosts = useCallback(async () => {
@@ -62,6 +69,23 @@ export const Dashboard = () => {
     navigate('/comments-dashboard/' + id);
   };
 
+  const handleDelete = async id => {
+    openConfirmModal();
+    deletePostID.current = id;
+  };
+
+  const handleModalConfirm = async () => {
+    closeConfirmModal();
+
+    try {
+      await del(`/admin/posts/${deletePostID.current}`);
+      getAllPosts();
+    } catch {
+      setNoticeTitle('刪除失敗');
+      openNoticeModal;
+    }
+  };
+
   useEffect(() => {
     getAllPosts();
   }, [getAllPosts]);
@@ -89,7 +113,13 @@ export const Dashboard = () => {
         {posts.map(item => (
           <PostListItem
             key={item.id}
-            {...{ item, handlePublish, handleEdit, handleCommentsManagement }}
+            {...{
+              item,
+              handlePublish,
+              handleEdit,
+              handleCommentsManagement,
+              handleDelete,
+            }}
           />
         ))}
       </Stack>
@@ -97,6 +127,12 @@ export const Dashboard = () => {
         title={noticeTitle}
         opened={noticeModalOpened}
         close={closeNoticeModal}
+      />
+      <ConfirmModal
+        title={'確認刪除？'}
+        opened={confirmModalOpened}
+        close={closeConfirmModal}
+        handleModalConfirm={handleModalConfirm}
       />
     </main>
   );

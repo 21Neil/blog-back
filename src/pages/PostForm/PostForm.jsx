@@ -181,6 +181,7 @@ const PostForm = () => {
             form={form}
             setNoticeTitle={setNoticeTitle}
             openNoticeModal={openNoticeModal}
+            postId={id}
           />
         )}
 
