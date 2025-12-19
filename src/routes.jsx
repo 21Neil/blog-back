@@ -29,8 +29,12 @@ export const routes = [
       },
       {
         path: '/comments-dashboard/:id',
-        element: <CommentsDashboard />
-      }
+        element: <CommentsDashboard />,
+      },
+      {
+        path: '/password',
+        element: <Login />,
+      },
     ],
   },
 ];

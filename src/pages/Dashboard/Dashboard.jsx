@@ -86,6 +86,10 @@ export const Dashboard = () => {
     }
   };
 
+  const changePasswordOnClick = () => {
+    navigate('/password');
+  };
+
   useEffect(() => {
     getAllPosts();
   }, [getAllPosts]);
@@ -93,6 +97,9 @@ export const Dashboard = () => {
   return (
     <main className={style.dashboard}>
       <Group justify='flex-end'>
+        <Button variant='light' onClick={changePasswordOnClick}>
+          變更密碼
+        </Button>
         <Button variant='light' onClick={logoutOnClick}>
           <LogOut size={14} />
           <span>logout</span>

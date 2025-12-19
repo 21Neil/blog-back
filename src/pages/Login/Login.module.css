@@ -26,6 +26,11 @@
   border-color: #67cfff;
 }
 
+.loginInputInput:focus-within {
+  outline: none;
+  border-color: #67cfff;
+}
+
 .loginInputInput[data-error] {
   outline: none;
   border-color: #ff435c;

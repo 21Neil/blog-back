@@ -1,3 +1,5 @@
 .dashboard {
   padding: 1.715rem 1.715rem;
+  max-width: 768px;
+  margin: auto;
 }
