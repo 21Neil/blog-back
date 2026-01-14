@@ -17,16 +17,25 @@ const PostListItem = ({
   handleEdit,
   handleCommentsManagement,
   handleDelete,
+  textLength,
+  titleLength,
 }) => {
+  console.log(textLength);
   return (
     <Box>
       <Flex h={66} gap={16} pt={8} pb={8}>
         <Image src={item.imageUrl} w={50} h={50} bdrs={5} />
         <Stack gap={0} justify='space-between'>
           <Title order={3} size={16}>
-            {item.title}
+            {item.title.length > titleLength
+              ? item.title.slice(0, titleLength) + '...'
+              : item.title}
           </Title>
-          <Text size='sm'>{item.TEXTContent}</Text>
+          <Text size='sm'>
+            {item.TEXTContent.length > textLength
+              ? item.TEXTContent.slice(0, textLength) + '...'
+              : item.TEXTContent}
+          </Text>
         </Stack>
 
         <Flex align='center' ml='auto'>

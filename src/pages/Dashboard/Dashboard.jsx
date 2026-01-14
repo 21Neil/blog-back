@@ -17,6 +17,8 @@ export const Dashboard = () => {
   const navigate = useNavigate();
   const { get, post, put, del } = useFetch(undefined, navigate);
   const deletePostID = useRef();
+  const [textLength, setTextLength] = useState(15);
+  const [titleLength, setTitleLength] = useState(13);
 
   const [
     noticeModalOpened,
@@ -94,6 +96,33 @@ export const Dashboard = () => {
     getAllPosts();
   }, [getAllPosts]);
 
+  useEffect(() => {
+    const calcTextLength = () =>
+      (
+        (window.innerWidth > 768
+          ? 768
+          : window.innerWidth - 48 - 50 - 26 - 32) / 14
+      ).toFixed(0);
+    const calcTitleLength = () =>
+      (
+        (window.innerWidth > 768
+          ? 768
+          : window.innerWidth - 48 - 50 - 26 - 32) / 22
+      ).toFixed(0);
+
+    const resizeEventHandler = () => {
+      setTextLength(calcTextLength());
+      setTitleLength(calcTitleLength());
+    };
+
+    setTextLength(calcTextLength());
+    setTitleLength(calcTitleLength());
+
+    window.addEventListener('resize', resizeEventHandler);
+
+    return () => window.removeEventListener('resize', resizeEventHandler);
+  }, []);
+
   return (
     <main className={style.dashboard}>
       <Group justify='flex-end'>
@@ -126,6 +155,8 @@ export const Dashboard = () => {
               handleEdit,
               handleCommentsManagement,
               handleDelete,
+              textLength,
+              titleLength,
             }}
           />
         ))}
