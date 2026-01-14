@@ -20,7 +20,6 @@ const PostListItem = ({
   textLength,
   titleLength,
 }) => {
-  console.log(textLength);
   return (
     <Box>
       <Flex h={66} gap={16} pt={8} pb={8}>

@@ -6,7 +6,7 @@ import { LogOut, Plus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { Button, Group, Stack, Title } from '@mantine/core';
 import PostListItem from './Widgets/PostListItem';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useViewportSize } from '@mantine/hooks';
 import NoticeModal from '../../components/NoticeModal/NoticeModal';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 
@@ -17,8 +17,10 @@ export const Dashboard = () => {
   const navigate = useNavigate();
   const { get, post, put, del } = useFetch(undefined, navigate);
   const deletePostID = useRef();
-  const [textLength, setTextLength] = useState(15);
-  const [titleLength, setTitleLength] = useState(13);
+  const { width } = useViewportSize();
+  const containerWidth = width > 768 ? 768 : width - 156;
+  const textLength = (containerWidth / 14).toFixed();
+  const titleLength = (containerWidth / 22).toFixed();
 
   const [
     noticeModalOpened,
@@ -95,33 +97,6 @@ export const Dashboard = () => {
   useEffect(() => {
     getAllPosts();
   }, [getAllPosts]);
-
-  useEffect(() => {
-    const calcTextLength = () =>
-      (
-        (window.innerWidth > 768
-          ? 768
-          : window.innerWidth - 48 - 50 - 26 - 32) / 14
-      ).toFixed(0);
-    const calcTitleLength = () =>
-      (
-        (window.innerWidth > 768
-          ? 768
-          : window.innerWidth - 48 - 50 - 26 - 32) / 22
-      ).toFixed(0);
-
-    const resizeEventHandler = () => {
-      setTextLength(calcTextLength());
-      setTitleLength(calcTitleLength());
-    };
-
-    setTextLength(calcTextLength());
-    setTitleLength(calcTitleLength());
-
-    window.addEventListener('resize', resizeEventHandler);
-
-    return () => window.removeEventListener('resize', resizeEventHandler);
-  }, []);
 
   return (
     <main className={style.dashboard}>
