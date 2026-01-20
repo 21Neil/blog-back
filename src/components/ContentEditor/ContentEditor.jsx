@@ -63,12 +63,7 @@ const ContentEditor = ({
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Color,
       TextStyle,
-      Image.configure({
-        resize: {
-          enabled: true,
-          alwaysPreserveAspectRatio: true,
-        },
-      }),
+      Image,
       FileHandler.configure({
         allowedMimeTypes: [
           'image/png',

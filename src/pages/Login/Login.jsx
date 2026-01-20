@@ -8,6 +8,7 @@ import { useForm } from '@mantine/form';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import z from 'zod';
 import LoginInput from './LoginInput';
+import { useNavigate } from 'react-router';
 
 const loginSchema = z.object({
   username: z.string().min(1, { message: '請輸入使用者名稱' }).trim(),
@@ -48,6 +49,7 @@ const passwordSchema = z
 export const Login = () => {
   const { loading, post, put } = useFetch();
   const { checkAuth, isLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -80,6 +82,10 @@ export const Login = () => {
       }
     }
   };
+
+  const handleCancel = () => {
+    navigate(-1)
+  }
 
   return (
     <>
@@ -126,6 +132,7 @@ export const Login = () => {
             </Text>
           </Stack>
           <Group justify='flex-end'>
+            {isLogin && <Button variant='light' onClick={handleCancel}>Cancel</Button>}
             <Button type='submit'>{isLogin ? 'Save' : 'Login'}</Button>
           </Group>
         </form>

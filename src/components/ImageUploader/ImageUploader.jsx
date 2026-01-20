@@ -2,7 +2,7 @@ import { Box, FileInput, Image, Text } from '@mantine/core';
 import styles from './ImageUploader.module.css';
 
 const ImageUploader = ({ form }) => (
-  <Box mih={285}>
+  <Box h={{ base: 250, xs: 400}} mb={16}>
     <label className={styles.imageLabel}>
       {form.getValues().imageUrl ? (
         <Image src={form.getValues().imageUrl} />

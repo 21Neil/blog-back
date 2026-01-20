@@ -1,7 +1,5 @@
 .root {
   border-color: var(--light-grey-border);
-  height: 100%;
-  overflow: hidden;
 }
 
 .toolbar {
@@ -9,6 +7,6 @@
 }
 
 .Typography {
-  height: calc(100% - 85px);
+  height: 400px;
   overflow: auto;
 }
