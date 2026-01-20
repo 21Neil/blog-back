@@ -12,7 +12,7 @@ const CommentListItem = ({ comment, handleDeleteComment }) => {
             {comment.name}
           </Title>
           <Text fz={12} c='gray.6' component='span'>
-            {date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate()}
+            {date.getFullYear() + '/' + (+date.getMonth() + 1) + '/' + date.getDate()}
           </Text>
         </Flex>
 
