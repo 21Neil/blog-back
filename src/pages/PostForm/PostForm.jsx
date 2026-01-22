@@ -66,12 +66,10 @@ const PostForm = () => {
   };
 
   const handleSaveDraft = async () => {
-    console.log(form.getValues());
     if (form.validate().hasErrors) return;
 
     const values = form.getValues();
-    const formdata = createPostFormData(values, false);
-    console.log(values, formdata);
+    const formdata = await createPostFormData(values, false);
 
     if (!id) {
       try {
@@ -111,7 +109,7 @@ const PostForm = () => {
 
     if (actionType === ActionType.publish) {
       const values = form.getValues();
-      const formdata = createPostFormData(values, true);
+      const formdata = await createPostFormData(values, true);
 
       if (!id) {
         try {

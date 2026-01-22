@@ -8,23 +8,21 @@ import Image from '@tiptap/extension-image';
 import styles from './ContentEditor.module.css';
 import useFetch from '../../hooks/useFetch';
 import { useNavigate } from 'react-router';
+import compressImage from '../../utils/compressImage';
 
-const ContentEditor = ({
-  form,
-  setNoticeTitle,
-  openNoticeModal,
-  postId
-}) => {
+const ContentEditor = ({ form, setNoticeTitle, openNoticeModal, postId }) => {
   const navigate = useNavigate();
   const { post } = useFetch(true, navigate);
 
   const handleImageUpload = async file => {
     const formData = new FormData();
 
-    formData.append('uploadImage', file);
-    formData.append('postId', postId)
-
     try {
+      const compressedImage = await compressImage(file);
+
+      formData.append('uploadImage', compressedImage);
+      formData.append('postId', postId);
+
       const res = await post('/admin/posts/upload-content-image', formData);
       return res;
     } catch {
@@ -79,7 +77,6 @@ const ContentEditor = ({
         onPaste: (currentEditor, files, htmlContent) => {
           files.forEach(async file => {
             if (htmlContent) {
-              console.log(htmlContent);
               return false;
             }
 
