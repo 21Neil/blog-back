@@ -1,9 +1,7 @@
 import { useCallback, useContext, useState } from 'react';
 import LoadingContext from '../context/Loading/LoadingContext';
 
-const baseUrl = import.meta.env.PROD
-  ? 'prod url'
-  : 'http://localhost:3000/api';
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const useFetch = (formdata = false, navigate) => {
   const [data, setData] = useState(null);
