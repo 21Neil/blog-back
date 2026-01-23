@@ -8,11 +8,11 @@ import ImageUploader from '../../components/ImageUploader/ImageUploader';
 import ContentEditor from '../../components/ContentEditor/ContentEditor';
 import PostTitle from '../../components/PostTitle/PostTitle';
 import useFetch from '../../hooks/useFetch';
-import createPostFormData from '../../utils/createPostFormdata';
 import { useDisclosure } from '@mantine/hooks';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 import NoticeModal from '../../components/NoticeModal/NoticeModal';
 import { useEffect, useMemo, useState } from 'react';
+import createPostFormData from '../../utils/createPostFormData';
 
 const ActionType = {
   cancel: 'cancel',
