@@ -10,7 +10,7 @@ const ImageUploader = ({ form }) => (
         <p>Check to upload photo...</p>
       )}
       <FileInput
-        className={styles.imageInput}
+        classNames={{ root: styles.imageInput }}
         accept='image/*'
         key={form.key('image')}
         {...form.getInputProps('image')}
