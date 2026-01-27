@@ -20,7 +20,7 @@ export const Dashboard = () => {
   const { width } = useViewportSize();
   const containerWidth = width > 768 ? 768 : width - 156;
   const textLength = (containerWidth / 14).toFixed();
-  const titleLength = (containerWidth / 22).toFixed();
+  const titleLength = (containerWidth / 22).toFixed() - 1;
 
   const [
     noticeModalOpened,

@@ -25,11 +25,14 @@ const PostListItem = ({
       <Flex h={66} gap={16} pt={8} pb={8}>
         <Image src={item.imageUrl} w={50} h={50} bdrs={5} />
         <Stack gap={0} justify='space-between'>
-          <Title order={3} size={16}>
-            {item.title.length > titleLength
-              ? item.title.slice(0, titleLength) + '...'
-              : item.title}
-          </Title>
+          <Flex align='baseline'>
+            <Title order={3} size={16}>
+              {item.title.length > titleLength
+                ? item.title.slice(0, titleLength) + '...'
+                : item.title}
+            </Title>
+            {item.published ? <></> : <Text size='sm' c='red'>&nbsp;草稿</Text>}
+          </Flex>
           <Text size='sm'>
             {item.TEXTContent.length > textLength
               ? item.TEXTContent.slice(0, textLength) + '...'
