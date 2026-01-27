@@ -9,6 +9,7 @@ import styles from './ContentEditor.module.css';
 import useFetch from '../../hooks/useFetch';
 import { useNavigate } from 'react-router';
 import compressImage from '../../utils/compressImage';
+import { ImagePlus } from 'lucide-react';
 
 const ContentEditor = ({ form, setNoticeTitle, openNoticeModal, postId }) => {
   const navigate = useNavigate();
@@ -70,12 +71,13 @@ const ContentEditor = ({ form, setNoticeTitle, openNoticeModal, postId }) => {
           'image/webp',
         ],
         onDrop: (currentEditor, files, pos) => {
-          files.forEach(async file => {
+          files.forEach(file => {
             handleImage(currentEditor, file, pos);
           });
         },
         onPaste: (currentEditor, files, htmlContent) => {
-          files.forEach(async file => {
+          files.forEach(file => {
+            console.log(file);
             if (htmlContent) {
               return false;
             }
@@ -83,13 +85,33 @@ const ContentEditor = ({ form, setNoticeTitle, openNoticeModal, postId }) => {
             handleImage(
               currentEditor,
               file,
-              currentEditor.state.selection.anchor
+              currentEditor.state.selection.anchor,
             );
           });
         },
       }),
     ],
   });
+
+  const handleInsertImage = async () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.multiple = true;
+
+    input.onchange = async () => {
+      const files = Array.from(input.files || []);
+      if (files.length > 0 && editor) {
+        const pos = editor.state.selection.anchor;
+
+        files.forEach(file => {
+          handleImage(editor, file, pos);
+        });
+      }
+    };
+
+    input.click();
+  };
 
   return (
     <RichTextEditor editor={editor} classNames={styles}>
@@ -102,6 +124,12 @@ const ContentEditor = ({ form, setNoticeTitle, openNoticeModal, postId }) => {
         </RichTextEditor.ControlsGroup>
 
         <RichTextEditor.ControlsGroup>
+          <RichTextEditor.Control
+            onClick={handleInsertImage}
+            aria-label='Insert image'
+          >
+            <ImagePlus size={16} strokeWidth={1.5} />
+          </RichTextEditor.Control>
           <RichTextEditor.Bold />
           <RichTextEditor.Italic />
           <RichTextEditor.Underline />

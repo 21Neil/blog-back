@@ -4,6 +4,8 @@
 
 .toolbar {
   border-color: var(--light-grey-border);
+  overflow: auto;
+  flex-wrap: nowrap;
 }
 
 .Typography {
