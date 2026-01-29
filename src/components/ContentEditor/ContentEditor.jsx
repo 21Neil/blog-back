@@ -10,6 +10,7 @@ import useFetch from '../../hooks/useFetch';
 import { useNavigate } from 'react-router';
 import compressImage from '../../utils/compressImage';
 import { ImagePlus } from 'lucide-react';
+import { useEffect } from 'react';
 
 const ContentEditor = ({ form, setNoticeTitle, openNoticeModal, postId }) => {
   const navigate = useNavigate();
@@ -112,6 +113,10 @@ const ContentEditor = ({ form, setNoticeTitle, openNoticeModal, postId }) => {
 
     input.click();
   };
+
+  useEffect(() => {
+    form.getInputProps('JSONContent').onChange(editor.getJSON());
+  }, [form, editor])
 
   return (
     <RichTextEditor editor={editor} classNames={styles}>
