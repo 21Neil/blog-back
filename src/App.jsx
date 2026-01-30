@@ -14,14 +14,14 @@ function App() {
   useEffect(() => {
     checkAuth();
     if (!isAuthReady) return;
-    
+
     const currentPath = location.pathname;
 
     if (!isLogin && currentPath !== '/login') {
       navigate('/login');
       return;
     }
-    if (isLogin && currentPath === '/login') {
+    if (isLogin && (currentPath === '/login' || currentPath === '/')) {
       navigate('/dashboard');
       return;
     }
