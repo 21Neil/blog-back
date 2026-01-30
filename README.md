@@ -16,6 +16,7 @@
 - 自動登出機制：當 Token 過期，系統會自動導向登入頁。
 
 ## 📁 專案結構
+
 ```
 public                  # 靜態資源（不經過 Vite 編譯）
 src
@@ -37,3 +38,35 @@ README.md
 ```
 
 ## 📸 界面展示 (Screenshots)
+
+登入頁面
+
+<img src="./docs/screenshots/demo-login.png" width="500px" />
+
+文章管理頁面
+
+<img src="./docs/screenshots/demo-dashboard.png" width="500px" />
+
+文章編輯畫面
+
+<img src="./docs/screenshots/demo-edit-post.png" width="500px" />
+
+## 🔑 環境變數設定（.env）
+
+請在根目錄建立 .env 並參考以下設定：
+
+```
+# VITE_API_BASE_URL='/api'
+```
+
+## 🚀 快速啟動
+
+1. 安裝依賴
+```
+npm install
+```
+
+2. 啟動專案
+```
+npm run dev
+```
