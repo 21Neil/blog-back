@@ -56,7 +56,7 @@ README.md
 請在根目錄建立 .env 並參考以下設定：
 
 ```
-# VITE_API_BASE_URL='/api'
+# VITE_API_BASE_URL='http://localhost:3000/api'
 ```
 
 ## 🚀 快速啟動
